@@ -5,7 +5,6 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/application/guards/jwt.guard';
-import { EmpresasModule } from './empresas/empresas.module';
 
 @Module({
   imports: [
@@ -18,7 +17,6 @@ import { EmpresasModule } from './empresas/empresas.module';
     }),
     UsuariosModule,
     AuthModule,
-    EmpresasModule,
   ],
   controllers: [],
   providers: [
