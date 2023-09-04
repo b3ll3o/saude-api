@@ -1,0 +1,4 @@
+export enum PerfilEnum {
+  ADMINISTRADOR = 'ADMINISTRADOR',
+  OPERADOR = 'OPERADOR',
+}
