@@ -30,7 +30,7 @@ export class EmpresasUsuariosService {
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();
-      console.log(err)
+      console.log(err);
     } finally {
       await queryRunner.release();
     }

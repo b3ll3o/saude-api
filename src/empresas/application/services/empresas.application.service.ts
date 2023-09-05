@@ -4,6 +4,8 @@ import { NovaEmpresaDto } from '../dtos/nova.empresa.dto';
 import { EmpresaCadastradaDto } from '../dtos/empresa.cadastrada.dto';
 import { Empresa } from '@/empresas/domain/entities/empresa.entity';
 import { BadRequestCustomException } from '@/shared/exceptions/bad.request.custom.exception';
+import { UsuarioLogadoDto } from '@/auth/application/dtos/usuario.logado.dto';
+import { UsuarioFabrica } from '@/usuarios/domain/fabricas/usuario.fabrica';
 
 @Injectable()
 export class EmpresasApplicationService {
@@ -11,14 +13,14 @@ export class EmpresasApplicationService {
 
   async cadastra(
     novaEmpresaDto: NovaEmpresaDto,
-    usuarioLogado,
+    usuarioLogado: UsuarioLogadoDto,
   ): Promise<EmpresaCadastradaDto> {
     const { nome } = novaEmpresaDto;
     const empresa = await this.empresasService.cadastra(
       new Empresa({
         nome,
       }),
-      usuarioLogado,
+      UsuarioFabrica.fabrica(usuarioLogado),
     );
     if (empresa.invalido()) {
       throw new BadRequestCustomException(empresa.erros);

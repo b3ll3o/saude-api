@@ -5,10 +5,11 @@ export class EmpresaCadastradaDto extends Objeto<EmpresaCadastradaDto> {
   id: number;
   nome: string;
 
-  constructor(empresa: Empresa){
-    const {id, nome} = empresa
+  constructor(empresa: Empresa) {
+    const { id, nome } = empresa;
     super({
-      id, nome
-    })
+      id,
+      nome,
+    });
   }
 }

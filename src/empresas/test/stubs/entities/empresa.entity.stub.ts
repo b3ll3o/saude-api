@@ -23,8 +23,8 @@ export class EmpresaStub {
   }
 
   static invalido(): Empresa {
-    const empresa = this.novo()
-    empresa.podeSerCadastrada(this.cadastrado())
-    return empresa
+    const empresa = this.novo();
+    empresa.podeSerCadastrada(this.cadastrado());
+    return empresa;
   }
 }

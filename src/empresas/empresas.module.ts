@@ -7,7 +7,13 @@ import { EmpresasUsuariosService } from './domain/services/empresas.usuarios.ser
 import { EmpresasApplicationService } from './application/services/empresas.application.service';
 import { EmpresasController } from './controllers/empresas.controller';
 
-@Module({ imports: [TypeOrmModule.forFeature([Empresa, EmpresaUsuario])],
-    providers: [EmpresasService, EmpresasUsuariosService, EmpresasApplicationService],
-    controllers: [EmpresasController]})
+@Module({
+  imports: [TypeOrmModule.forFeature([Empresa, EmpresaUsuario])],
+  providers: [
+    EmpresasService,
+    EmpresasUsuariosService,
+    EmpresasApplicationService,
+  ],
+  controllers: [EmpresasController],
+})
 export class EmpresasModule {}
