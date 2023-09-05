@@ -4,6 +4,7 @@ import { Empresa } from '../entities/empresa.entity';
 import { Repository } from 'typeorm';
 import { Usuario } from '@/usuarios/domain/entities/usuario.entity';
 import { EmpresasUsuariosService } from './empresas.usuarios.service';
+import { PerfilEnum } from '../enums/perfil.enum';
 
 @Injectable()
 export class EmpresasService {
@@ -33,11 +34,11 @@ export class EmpresasService {
     novaEmpresa: Empresa,
     usuarioLogado: Usuario,
   ): Promise<Empresa> {
-    const empresaCadastrada = await this.empresasRepository.save(novaEmpresa);
-    await this.empresasUsuariosService.cadastra(
-      empresaCadastrada,
+    const empresaUsuario = await this.empresasUsuariosService.cadastra(
+      novaEmpresa,
       usuarioLogado,
+      PerfilEnum.ADMINISTRADOR,
     );
-    return empresaCadastrada;
+    return empresaUsuario.empresa;
   }
 }

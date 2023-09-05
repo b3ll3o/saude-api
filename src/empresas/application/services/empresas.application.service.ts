@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { NovaEmpresaDto } from '../dtos/nova.empresa.dto';
 import { EmpresaCadastradaDto } from '../dtos/empresa.cadastrada.dto';
 import { Empresa } from '@/empresas/domain/entities/empresa.entity';
+import { BadRequestCustomException } from '@/shared/exceptions/bad.request.custom.exception';
 
 @Injectable()
 export class EmpresasApplicationService {
@@ -19,6 +20,9 @@ export class EmpresasApplicationService {
       }),
       usuarioLogado,
     );
+    if (empresa.invalido()) {
+      throw new BadRequestCustomException(empresa.erros);
+    }
     return new EmpresaCadastradaDto(empresa);
   }
 }
