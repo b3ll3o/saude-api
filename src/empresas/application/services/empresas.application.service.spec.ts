@@ -29,7 +29,7 @@ describe('EmpresasApplicationService', () => {
         .spyOn(empresasService, 'cadastra')
         .mockImplementation(() => Promise.resolve(EmpresaStub.invalido()));
       await expect(
-        service.cadastra(EmpresaStub.novo(), UsuarioLogadoDtoStub.get(),),
+        service.cadastra(EmpresaStub.novo(), UsuarioLogadoDtoStub.get()),
       ).rejects.toThrow();
     });
   });

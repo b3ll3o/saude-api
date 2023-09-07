@@ -5,7 +5,7 @@ import { EmpresaCadastradaDto } from '../dtos/empresa.cadastrada.dto';
 import { Empresa } from '@/empresas/domain/entities/empresa.entity';
 import { BadRequestCustomException } from '@/shared/exceptions/bad.request.custom.exception';
 import { UsuarioLogadoDto } from '@/auth/application/dtos/usuario.logado.dto';
-import { UsuarioFabrica } from '@/usuarios/domain/fabricas/usuario.fabrica';
+import { Usuario } from '@/usuarios/domain/entities/usuario.entity';
 
 @Injectable()
 export class EmpresasApplicationService {
@@ -20,7 +20,7 @@ export class EmpresasApplicationService {
       new Empresa({
         nome,
       }),
-      UsuarioFabrica.fabrica(usuarioLogado),
+      new Usuario(usuarioLogado),
     );
     if (empresa.invalido()) {
       throw new BadRequestCustomException(empresa.erros);

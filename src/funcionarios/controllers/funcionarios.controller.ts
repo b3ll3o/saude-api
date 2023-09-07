@@ -3,6 +3,7 @@ import { FuncionariosApplicationService } from '../application/services/funciona
 import { NovoFuncionarioDto } from '../application/dtos/novo.funcionario.dto';
 import { FuncionarioCadastradoDto } from '../application/dtos/funcionario.cadastrado.dto';
 import { UsuarioLogado } from '@/auth/application/decorators/usuario.logado.decorator';
+import { UsuarioLogadoDto } from '@/auth/application/dtos/usuario.logado.dto';
 
 @Controller('funcionarios')
 export class FuncioariosController {
@@ -11,7 +12,7 @@ export class FuncioariosController {
   @Post()
   async cadastra(
     @Body() novoFuncionarioDto: NovoFuncionarioDto,
-    @UsuarioLogado() usuarioLogado,
+    @UsuarioLogado() usuarioLogado: UsuarioLogadoDto,
   ): Promise<FuncionarioCadastradoDto> {
     return this.service.cadastra(novoFuncionarioDto, usuarioLogado);
   }
