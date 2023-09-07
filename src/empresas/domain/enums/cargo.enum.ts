@@ -1,4 +1,4 @@
-export enum PerfilEnum {
+export enum CargoEnum {
   ADMINISTRADOR = 'ADMINISTRADOR',
   OPERADOR = 'OPERADOR',
 }

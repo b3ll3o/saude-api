@@ -3,4 +3,6 @@ import { PreenchimentoObrigatorio } from '@/shared/validation/erros/preenchiment
 export class NovoFuncionarioDto {
   @PreenchimentoObrigatorio()
   nome: string;
+  @PreenchimentoObrigatorio()
+  empresaId: number;
 }

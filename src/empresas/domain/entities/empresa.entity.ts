@@ -1,14 +1,16 @@
-import { EntidadeNotificavel } from '@/shared/objetos/classes/entidades/entidade.notificavel';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { EmpresaUsuario } from './empresa.usuario.entity';
 import { CampoJaCadastradoErro } from '@/shared/objetos/classes/erros/campo.ja.cadastrado.erro';
+import { EmpresaFuncionario } from './empresa.funcionario.entity';
+import { Funcionario } from '@/funcionarios/domain/entities/funcionario.entity';
+import { EntidadeRastreavel } from '@/shared/objetos/classes/entidades/entidade.rastreavel';
 
 @Entity('empresas')
-export class Empresa extends EntidadeNotificavel<Empresa> {
+export class Empresa extends EntidadeRastreavel<Empresa> {
   @Column()
   nome: string;
-  @OneToMany(() => EmpresaUsuario, (empresaUsuario) => empresaUsuario.empresa)
-  empresasUsuarios?: EmpresaUsuario[];
+
+  @OneToMany(() => EmpresaFuncionario, (ef) => ef.empresa)
+  empresasFuncionarios?: EmpresaFuncionario[];
 
   podeSerCadastrada(empresa: Empresa) {
     if (!empresa) {
@@ -16,5 +18,17 @@ export class Empresa extends EntidadeNotificavel<Empresa> {
     }
     this._notificacaoErro.adicionaErros([new CampoJaCadastradoErro('nome')]);
     return false;
+  }
+
+  podeCadastrarFuncionario(funcionario: Funcionario) {
+    const funcionarioCadastrado =
+      this.empresasFuncionarios
+        .map((ef) => ef.funcionario.nome)
+        .filter((n) => n === funcionario.nome).length > 0;
+    if (funcionarioCadastrado) {
+      this._notificacaoErro.adicionaErros([new CampoJaCadastradoErro('nome')]);
+      return false;
+    }
+    return true;
   }
 }

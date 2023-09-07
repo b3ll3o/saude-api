@@ -15,10 +15,11 @@ export class FuncionariosApplicationService {
     novoFuncionarioDto: NovoFuncionarioDto,
     usuarioLogado: UsuarioLogadoDto,
   ): Promise<FuncionarioCadastradoDto> {
-    const { nome } = novoFuncionarioDto;
+    const { nome, empresaId } = novoFuncionarioDto;
     const funcionario = await this.service.cadastra(
       new Funcionario({ nome }),
       new Usuario(usuarioLogado),
+      empresaId,
     );
     if (funcionario.invalido()) {
       throw new BadRequestCustomException(funcionario.erros);

@@ -3,15 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Empresa } from '../entities/empresa.entity';
 import { Repository } from 'typeorm';
 import { Usuario } from '@/usuarios/domain/entities/usuario.entity';
-import { EmpresasUsuariosService } from './empresas.usuarios.service';
-import { PerfilEnum } from '../enums/perfil.enum';
+import { CargoEnum } from '../enums/cargo.enum';
+import { Funcionario } from '@/funcionarios/domain/entities/funcionario.entity';
+import { EmpresasFuncionariosService } from './empresas.funcionarios.service';
 
 @Injectable()
 export class EmpresasService {
   constructor(
     @InjectRepository(Empresa)
     private readonly empresasRepository: Repository<Empresa>,
-    private readonly empresasUsuariosService: EmpresasUsuariosService,
+    private readonly empresasFuncionariosService: EmpresasFuncionariosService,
   ) {}
 
   async cadastra(
@@ -26,6 +27,21 @@ export class EmpresasService {
     return empresa;
   }
 
+  async podeSerCadastrado(
+    empresaId: number,
+    funcionario: Funcionario,
+  ): Promise<boolean> {
+    const empresa = await this._buscaPorId(empresaId);
+    if (!empresa.podeCadastrarFuncionario(funcionario)) {
+      return false;
+    }
+    return true;
+  }
+
+  private async _buscaPorId(id: number): Promise<Empresa> {
+    return this.empresasRepository.findOne({ where: { id } });
+  }
+
   private async _buscaPorNome(nome: string): Promise<null | Empresa> {
     return this.empresasRepository.findOne({ where: { nome } });
   }
@@ -34,11 +50,11 @@ export class EmpresasService {
     novaEmpresa: Empresa,
     usuarioLogado: Usuario,
   ): Promise<Empresa> {
-    const empresaUsuario = await this.empresasUsuariosService.cadastra(
-      novaEmpresa,
-      usuarioLogado,
-      PerfilEnum.ADMINISTRADOR,
-    );
+    const empresaUsuario = await this.empresasFuncionariosService.cadastra({
+      empresa: novaEmpresa,
+      funcionario: new Funcionario({ nome: usuarioLogado.email }),
+      cargo: CargoEnum.ADMINISTRADOR,
+    });
     return empresaUsuario.empresa;
   }
 }
