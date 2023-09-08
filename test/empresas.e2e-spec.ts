@@ -4,31 +4,39 @@ import { INestApplication } from '@nestjs/common';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from '@/usuarios/domain/entities/usuario.entity';
-import { UsuariosModule } from '@/usuarios/usuarios.module';
 import { ValidationPipeCustom } from '@/shared/pipes/validation.pipe.custom';
-import { UsuarioStub } from '@/usuarios/test/stubs/entities/usuario.entity.stub';
+import { Empresa } from '@/empresas/domain/entities/empresa.entity';
+import { EmpresaStub } from '@/empresas/test/stubs/entities/empresa.entity.stub';
+import { EmpresaFuncionario } from '@/empresas/domain/entities/empresa.funcionario.entity';
+import { Funcionario } from '@/funcionarios/domain/entities/funcionario.entity';
+import { EmpresasModule } from '@/empresas/empresas.module';
 
-const BASE_URL = '/usuarios';
+const BASE_URL = '/empresas';
 
-describe('Usuarios - cadastra', () => {
+describe('Empresas', () => {
   let app: INestApplication;
-  let repository: Repository<Usuario>;
+  let repository: Repository<Empresa>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        UsuariosModule,
+        EmpresasModule,
         TypeOrmModule.forRoot({
           type: 'sqlite',
           database: ':memory:',
-          entities: [Usuario],
+          entities: [Empresa, Usuario, EmpresaFuncionario, Funcionario],
           synchronize: true,
         }),
-        TypeOrmModule.forFeature([Usuario]),
+        TypeOrmModule.forFeature([
+          Empresa,
+          Usuario,
+          EmpresaFuncionario,
+          Funcionario,
+        ]),
       ],
     }).compile();
 
-    repository = module.get(getRepositoryToken(Usuario));
+    repository = module.get(getRepositoryToken(Empresa));
 
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipeCustom());
@@ -39,34 +47,26 @@ describe('Usuarios - cadastra', () => {
     it('deve cadastrar um novo usuario', () => {
       return request(app.getHttpServer())
         .post(BASE_URL)
-        .send(UsuarioStub.novo())
+        .send(EmpresaStub.novo())
         .expect(201)
         .expect({
           id: 1,
-          email: UsuarioStub.EMAIL,
-          nome: UsuarioStub.NOME,
+          nome: EmpresaStub.NOME,
         });
     });
 
-    it('não deve cadastrar dois usuarios com o mesmo email', async () => {
-      await repository.save(UsuarioStub.cadastrado());
+    it('não deve cadastrar duas empresas com o mesmo nome', async () => {
+      await repository.save(EmpresaStub.cadastrado());
       return request(app.getHttpServer())
         .post(BASE_URL)
-        .send(UsuarioStub.novo())
+        .send(EmpresaStub.novo())
         .expect(400);
     });
 
-    it('não deve cadastrar um usuario sem email', () => {
+    it('não deve cadastrar uma empresa sem nome', () => {
       return request(app.getHttpServer())
         .post(BASE_URL)
-        .send(UsuarioStub.novo(new Usuario({ email: '' })))
-        .expect(400);
-    });
-
-    it('não deve cadastrar um usuario sem senha', () => {
-      return request(app.getHttpServer())
-        .post(BASE_URL)
-        .send(UsuarioStub.novo(new Usuario({ senha: '' })))
+        .send(EmpresaStub.novo(new Empresa({ nome: '' })))
         .expect(400);
     });
   });

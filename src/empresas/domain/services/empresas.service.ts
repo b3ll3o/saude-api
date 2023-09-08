@@ -52,7 +52,10 @@ export class EmpresasService {
   ): Promise<Empresa> {
     const empresaUsuario = await this.empresasFuncionariosService.cadastra({
       empresa: novaEmpresa,
-      funcionario: new Funcionario({ nome: usuarioLogado.email }),
+      funcionario: new Funcionario({
+        nome: usuarioLogado.nome,
+        usuarioCriacao: usuarioLogado,
+      }),
       cargo: CargoEnum.ADMINISTRADOR,
     });
     return empresaUsuario.empresa;

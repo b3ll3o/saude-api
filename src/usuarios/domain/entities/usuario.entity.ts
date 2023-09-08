@@ -10,6 +10,8 @@ export class Usuario extends EntidadeNotificavel<Usuario> {
   email: string;
   @Column()
   senha: string;
+  @Column({ nullable: true })
+  nome?: string;
 
   podeSerCadastrado(usuario: Usuario): boolean {
     if (!usuario) {

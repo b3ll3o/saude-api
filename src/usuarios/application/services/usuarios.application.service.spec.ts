@@ -1,6 +1,7 @@
 import { UsuariosService } from '@/usuarios/domain/services/usuarios.service';
 import { UsuariosApplicationService } from './usuarios.application.service';
 import { UsuarioStub } from '@/usuarios/test/stubs/entities/usuario.entity.stub';
+import { NovoUsuarioDtoStub } from '@/usuarios/test/stubs/dtos/novo.usuario.dto.stub';
 
 describe('UsuariosApplicationService', () => {
   let service: UsuariosApplicationService;
@@ -15,7 +16,7 @@ describe('UsuariosApplicationService', () => {
       jest
         .spyOn(usuariosService, 'cadastra')
         .mockImplementation(() => Promise.resolve(UsuarioStub.cadastrado()));
-      const usuario = await service.cadastra(UsuarioStub.novo());
+      const usuario = await service.cadastra(NovoUsuarioDtoStub.novo());
       expect(usuario.id).toBe(UsuarioStub.ID);
       expect(usuario.email).toBe(UsuarioStub.EMAIL);
     });
@@ -24,7 +25,7 @@ describe('UsuariosApplicationService', () => {
       jest
         .spyOn(usuariosService, 'cadastra')
         .mockImplementation(() => Promise.resolve(UsuarioStub.invalido()));
-      await expect(service.cadastra(UsuarioStub.novo())).rejects.toThrow();
+      await expect(service.cadastra(NovoUsuarioDtoStub.novo())).rejects.toThrow();
     });
   });
 

@@ -13,9 +13,9 @@ export class UsuariosApplicationService {
   async cadastra(
     novoUsuarioDto: NovoUsuarioDto,
   ): Promise<UsuarioCadastradoDto> {
-    const { email, senha } = novoUsuarioDto;
+    const { email, senha, nome } = novoUsuarioDto;
     const usuario = await this.usuariosService.cadastra(
-      new Usuario({ email, senha }),
+      new Usuario({ email, senha, nome }),
     );
     if (usuario.invalido()) {
       throw new BadRequestCustomException(usuario.erros);

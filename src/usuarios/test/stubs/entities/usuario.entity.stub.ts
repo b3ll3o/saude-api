@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 export class UsuarioStub {
   static ID = 1;
   static EMAIL = 'email@email.com';
+  static NOME = 'nomeUsuario';
   static PERFIL = 'perfil';
   static EMAIL_2 = 'teste@teste.com';
   static SENHA = 'Senha@123';
@@ -14,6 +15,7 @@ export class UsuarioStub {
       id: null,
       email: this.EMAIL,
       senha: this.SENHA,
+      nome: this.NOME,
     }),
   ): Usuario {
     return usuario;
@@ -24,6 +26,7 @@ export class UsuarioStub {
       id: 1,
       email: this.EMAIL,
       senha: this.SENHA,
+      nome: this.NOME,
     }),
   ): Usuario {
     return usuario;
@@ -35,6 +38,7 @@ export class UsuarioStub {
     return new Usuario({
       id: 1,
       email: this.EMAIL,
+      nome: this.NOME,
       senha: hash,
     });
   }

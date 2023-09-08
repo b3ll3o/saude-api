@@ -2,7 +2,7 @@ import { UsuariosApplicationService } from '@/usuarios/application/services/usua
 import { JwtService } from '@nestjs/jwt';
 import { AuthApplicationService } from './auth.application.service';
 import { UsuarioAutenticavelDtoStub } from '@/auth/test/stubs/dtos/usuario.autenticavel.dto.stub';
-import { UsuarioStub } from '@/usuarios/test/stubs/entities/usuario.entity.stub';
+import { UsuarioCadastradoDtoStub } from '@/usuarios/test/stubs/dtos/usuario.cadastrado.dto.stub';
 
 describe('AuthApplicationService', () => {
   let usuarioApplicationService: UsuariosApplicationService;
@@ -28,7 +28,7 @@ describe('AuthApplicationService', () => {
     it('deve retorna um access_token quando usuario estiver autenticado', async () => {
       jest
         .spyOn(usuarioApplicationService, 'autentica')
-        .mockImplementation(() => Promise.resolve(UsuarioStub.cadastrado()));
+        .mockImplementation(() => Promise.resolve(UsuarioCadastradoDtoStub.cadastrado()));
       jest
         .spyOn(jwtService, 'signAsync')
         .mockImplementation(() => Promise.resolve(''));

@@ -8,4 +8,6 @@ export class NovoUsuarioDto extends Objeto<NovoUsuarioDto> {
   email: string;
   @PreenchimentoObrigatorio()
   senha: string;
+  @PreenchimentoObrigatorio()
+  nome: string;
 }
