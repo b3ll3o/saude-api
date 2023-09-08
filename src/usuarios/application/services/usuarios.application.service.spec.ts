@@ -25,7 +25,9 @@ describe('UsuariosApplicationService', () => {
       jest
         .spyOn(usuariosService, 'cadastra')
         .mockImplementation(() => Promise.resolve(UsuarioStub.invalido()));
-      await expect(service.cadastra(NovoUsuarioDtoStub.novo())).rejects.toThrow();
+      await expect(
+        service.cadastra(NovoUsuarioDtoStub.novo()),
+      ).rejects.toThrow();
     });
   });
 

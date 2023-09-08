@@ -28,7 +28,9 @@ describe('AuthApplicationService', () => {
     it('deve retorna um access_token quando usuario estiver autenticado', async () => {
       jest
         .spyOn(usuarioApplicationService, 'autentica')
-        .mockImplementation(() => Promise.resolve(UsuarioCadastradoDtoStub.cadastrado()));
+        .mockImplementation(() =>
+          Promise.resolve(UsuarioCadastradoDtoStub.cadastrado()),
+        );
       jest
         .spyOn(jwtService, 'signAsync')
         .mockImplementation(() => Promise.resolve(''));
