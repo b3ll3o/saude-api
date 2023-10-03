@@ -5,6 +5,7 @@ import { ValidationPipeCustom } from './shared/pipes/validation.pipe.custom';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipeCustom());
+  app.enableCors();
   await app.listen(3000);
 }
 bootstrap();
