@@ -9,7 +9,7 @@ import { SenhasService } from './senhas.service';
 describe('UsuariosService', () => {
   let repository: Repository<Usuario>;
   let service: UsuariosService;
-  let senhasService: SenhasService
+  let senhasService: SenhasService;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,7 +27,7 @@ describe('UsuariosService', () => {
     }).compile();
 
     repository = module.get(getRepositoryToken(Usuario));
-    senhasService = new SenhasService()
+    senhasService = new SenhasService();
     service = new UsuariosService(repository, senhasService);
   });
 

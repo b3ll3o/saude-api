@@ -20,7 +20,7 @@ const BASE_URL = '/auth';
 describe('Auth', () => {
   let app: INestApplication;
   let repository: Repository<Usuario>;
-  let senhasService: SenhasService
+  let senhasService: SenhasService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,31 +38,37 @@ describe('Auth', () => {
     }).compile();
 
     repository = module.get(getRepositoryToken(Usuario));
-    senhasService = module.get(SenhasService)
-    
+    senhasService = module.get(SenhasService);
+
     app = module.createNestApplication();
 
     const reflector = app.get(Reflector);
     const jwtService = app.get(JwtService);
 
     app.useGlobalPipes(new ValidationPipeCustom());
-    app.useGlobalGuards(new JwtGuard(jwtService, reflector))
+    app.useGlobalGuards(new JwtGuard(jwtService, reflector));
     await app.init();
   });
 
   describe('login', () => {
-    const BASE_URL_LOGIN = `${BASE_URL}/login`
+    const BASE_URL_LOGIN = `${BASE_URL}/login`;
 
     it('deve fazer o login de um usuario', async () => {
-      const usuarioCadastrado = UsuarioStub.cadastrado()
-      usuarioCadastrado.senha = await senhasService.geraHashSenha(usuarioCadastrado.senha)
+      const usuarioCadastrado = UsuarioStub.cadastrado();
+      usuarioCadastrado.senha = await senhasService.geraHashSenha(
+        usuarioCadastrado.senha,
+      );
       await repository.save(usuarioCadastrado);
-      const {email, senha } = UsuarioStub.cadastrado()
+      const { email, senha } = UsuarioStub.cadastrado();
       return request(app.getHttpServer())
         .post(BASE_URL_LOGIN)
-        .send(UsuarioAutenticavelDtoStub.novo(new UsuarioAutenticavelDto({email, senha})))
-        .expect(200)
-    })
+        .send(
+          UsuarioAutenticavelDtoStub.novo(
+            new UsuarioAutenticavelDto({ email, senha }),
+          ),
+        )
+        .expect(200);
+    });
   });
 
   afterEach(async () => {

@@ -4,8 +4,6 @@ import { Funcionario } from '../entities/funcionario.entity';
 import { Repository } from 'typeorm';
 import { Usuario } from '@/usuarios/domain/entities/usuario.entity';
 import { EmpresasService } from '@/empresas/domain/services/empresas.service';
-import { EmpresaFuncionario } from '@/empresas/domain/entities/empresa.funcionario.entity';
-import { CargoEnum } from '@/empresas/domain/enums/cargo.enum';
 import { Empresa } from '@/empresas/domain/entities/empresa.entity';
 import { EmpresaFuncionarioFabric } from '@/empresas/domain/fabrics/empresa.funcionario.fabric';
 
@@ -43,7 +41,11 @@ export class FuncionariosService {
   ) {
     funcionario.usuarioCriacao = usuarioLogado;
     funcionario.empresasFuncionarios.push(
-      EmpresaFuncionarioFabric.fabricaEmpresaFuncionarioOperador(funcionario, new Empresa({id: empresaId}), usuarioLogado)
+      EmpresaFuncionarioFabric.fabricaEmpresaFuncionarioOperador(
+        funcionario,
+        new Empresa({ id: empresaId }),
+        usuarioLogado,
+      ),
     );
     return this.funcionariosRepository.save(funcionario);
   }

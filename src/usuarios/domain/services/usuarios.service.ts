@@ -19,7 +19,9 @@ export class UsuariosService {
     if (!novoUsuario.podeSerCadastrado(usuarioEncontrado)) {
       return this._formataCampos(novoUsuario);
     }
-    novoUsuario.senha = await this.senhasService.geraHashSenha(novoUsuario.senha);
+    novoUsuario.senha = await this.senhasService.geraHashSenha(
+      novoUsuario.senha,
+    );
     const usuario = await this.usuariosRepository.save(novoUsuario);
     return this._formataCampos(usuario);
   }
