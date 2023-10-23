@@ -4,14 +4,16 @@ import { Usuario } from '../entities/usuario.entity';
 import { UsuariosService } from './usuarios.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { SenhasService } from './senhas.service';
 
 describe('UsuariosService', () => {
   let repository: Repository<Usuario>;
   let service: UsuariosService;
+  let senhasService: SenhasService
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsuariosService],
+      providers: [UsuariosService, SenhasService],
       imports: [
         TypeOrmModule.forRoot({
           type: 'sqlite',
@@ -25,7 +27,8 @@ describe('UsuariosService', () => {
     }).compile();
 
     repository = module.get(getRepositoryToken(Usuario));
-    service = new UsuariosService(repository);
+    senhasService = new SenhasService()
+    service = new UsuariosService(repository, senhasService);
   });
 
   describe('cadastra', () => {

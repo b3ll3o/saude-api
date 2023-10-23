@@ -4,10 +4,10 @@ export class UsuarioAutenticavelDtoStub {
   static EMAIL = 'teste@teste.com';
   static SENHA = 'Senha@123';
 
-  static novo(): UsuarioAutenticavelDto {
-    return new UsuarioAutenticavelDto({
-      email: this.EMAIL,
-      senha: this.SENHA,
-    });
+  static novo(usuario: UsuarioAutenticavelDto = new UsuarioAutenticavelDto({
+    email: this.EMAIL,
+    senha: this.SENHA,
+  })): UsuarioAutenticavelDto {
+    return usuario
   }
 }

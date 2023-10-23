@@ -2,13 +2,16 @@ import { UsuariosService } from '@/usuarios/domain/services/usuarios.service';
 import { UsuariosApplicationService } from './usuarios.application.service';
 import { UsuarioStub } from '@/usuarios/test/stubs/entities/usuario.entity.stub';
 import { NovoUsuarioDtoStub } from '@/usuarios/test/stubs/dtos/novo.usuario.dto.stub';
+import { SenhasService } from '@/usuarios/domain/services/senhas.service';
 
 describe('UsuariosApplicationService', () => {
   let service: UsuariosApplicationService;
   let usuariosService: UsuariosService;
+  let senhasService: SenhasService
 
   beforeEach(() => {
-    usuariosService = new UsuariosService(null);
+    senhasService = new SenhasService()
+    usuariosService = new UsuariosService(null, null);
     service = new UsuariosApplicationService(usuariosService);
   });
   describe('cadastra', () => {

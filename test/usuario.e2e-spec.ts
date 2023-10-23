@@ -10,7 +10,7 @@ import { UsuarioStub } from '@/usuarios/test/stubs/entities/usuario.entity.stub'
 
 const BASE_URL = '/usuarios';
 
-describe('Usuarios - cadastra', () => {
+describe('Usuarios', () => {
   let app: INestApplication;
   let repository: Repository<Usuario>;
 

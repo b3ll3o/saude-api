@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { Usuario } from '../entities/usuario.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { SenhasService } from './senhas.service';
 
 @Injectable()
 export class UsuariosService {
   constructor(
     @InjectRepository(Usuario)
     private readonly usuariosRepository: Repository<Usuario>,
+    private readonly senhasService: SenhasService,
   ) {}
 
   async cadastra(novoUsuario: Usuario): Promise<Usuario> {
@@ -18,7 +19,7 @@ export class UsuariosService {
     if (!novoUsuario.podeSerCadastrado(usuarioEncontrado)) {
       return this._formataCampos(novoUsuario);
     }
-    novoUsuario.senha = await this._hashSenha(novoUsuario.senha);
+    novoUsuario.senha = await this.senhasService.geraHashSenha(novoUsuario.senha);
     const usuario = await this.usuariosRepository.save(novoUsuario);
     return this._formataCampos(usuario);
   }
@@ -28,7 +29,7 @@ export class UsuariosService {
     if (!usuario.podeSerEncontrado(usuarioCadastrado)) {
       return this._formataCampos(usuario);
     }
-    const senhaVerificada = await this._verificaSenha(
+    const senhaVerificada = await this.senhasService.verificaSenha(
       usuario.senha,
       usuarioCadastrado.senha,
     );
@@ -45,14 +46,5 @@ export class UsuariosService {
 
   private async _buscaUsuarioPorEmail(email: string): Promise<Usuario | null> {
     return this.usuariosRepository.findOne({ where: { email } });
-  }
-
-  private async _hashSenha(senha: string) {
-    const salt = await bcrypt.genSalt();
-    return await bcrypt.hash(senha, salt);
-  }
-
-  private async _verificaSenha(senha: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(senha, hash);
   }
 }

@@ -7,6 +7,7 @@ import { EmpresasService } from '@/empresas/domain/services/empresas.service';
 import { EmpresaFuncionario } from '@/empresas/domain/entities/empresa.funcionario.entity';
 import { CargoEnum } from '@/empresas/domain/enums/cargo.enum';
 import { Empresa } from '@/empresas/domain/entities/empresa.entity';
+import { EmpresaFuncionarioFabric } from '@/empresas/domain/fabrics/empresa.funcionario.fabric';
 
 @Injectable()
 export class FuncionariosService {
@@ -42,12 +43,7 @@ export class FuncionariosService {
   ) {
     funcionario.usuarioCriacao = usuarioLogado;
     funcionario.empresasFuncionarios.push(
-      new EmpresaFuncionario({
-        cargo: CargoEnum.OPERADOR,
-        funcionario,
-        empresa: new Empresa({ id: empresaId }),
-        usuarioCriacao: usuarioLogado,
-      }),
+      EmpresaFuncionarioFabric.fabricaEmpresaFuncionarioOperador(funcionario, new Empresa({id: empresaId}), usuarioLogado)
     );
     return this.funcionariosRepository.save(funcionario);
   }
