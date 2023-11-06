@@ -56,9 +56,7 @@ describe('Auth', () => {
     it('não deve fazer o login de um usuario não cadastrado', async () => {
       return request(app.getHttpServer())
         .post(BASE_URL_LOGIN)
-        .send(
-          UsuarioAutenticavelDtoStub.novo(),
-        )
+        .send(UsuarioAutenticavelDtoStub.novo())
         .expect(401);
     });
 
