@@ -53,6 +53,15 @@ describe('Auth', () => {
   describe('login', () => {
     const BASE_URL_LOGIN = `${BASE_URL}/login`;
 
+    it('não deve fazer o login de um usuario não cadastrado', async () => {
+      return request(app.getHttpServer())
+        .post(BASE_URL_LOGIN)
+        .send(
+          UsuarioAutenticavelDtoStub.novo(),
+        )
+        .expect(401);
+    });
+
     it('deve fazer o login de um usuario', async () => {
       const usuarioCadastrado = UsuarioStub.cadastrado();
       usuarioCadastrado.senha = await senhasService.geraHashSenha(
